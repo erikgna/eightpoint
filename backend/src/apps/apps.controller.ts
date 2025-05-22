@@ -4,21 +4,21 @@ import { AppsService } from 'src/apps/apps.service';
 
 @Controller('apps')
 export class AppsController {
-    constructor(private readonly appsService: AppsService) { }
+    constructor(private readonly service: AppsService) { }
 
     @Get('me')
     getAppByApiKey(@Req() req) {
-        return this.appsService.getAppByApiKey(req.currentApp.id);
+        return this.service.getAppByApiKey(req.currentApp.id);
     }
 
     @Post()
     @UsePipes(new ValidationPipe({ whitelist: true }))
     create(@Body() dto: CreateAppDto) {
-        return this.appsService.create(dto);
+        return this.service.create(dto);
     }
 
     @Get('analytics')
     getAnalytics(@Req() req) {
-        return this.appsService.getAnalytics(req.currentApp.id);
+        return this.service.getAnalytics(req.currentApp.id);
     }
 }

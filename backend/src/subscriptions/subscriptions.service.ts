@@ -23,6 +23,7 @@ export class SubscriptionsService {
             const [data, total] = await Promise.all([
                 this.prisma.subscription.findMany({
                     where: { appId, status: 'active' },
+                    include: { subscriptionItems: true },
                     skip,
                     take: limit,
                     orderBy: { createdAt: 'desc' }

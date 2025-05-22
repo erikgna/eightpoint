@@ -93,7 +93,7 @@ const Dashboard = () => {
                 </Card>
             )}
 
-            {subscriptions.length > 0 && (
+            {subscriptions && subscriptions.length > 0 && (
                 <Card title="Active Subscriptions">
                     <Table
                         rowKey="id"
@@ -104,6 +104,25 @@ const Dashboard = () => {
                             total: pagination.total,
                             pageSize: pagination.limit,
                             onChange: (page) => setPagination((prev) => ({ ...prev, page }))
+                        }}
+                        expandable={{
+                            expandedRowRender: (record: ISubscription) => {
+                                return (
+                                    <Table
+                                        rowKey="id"
+                                        dataSource={record.subscriptionItems || []}
+                                        pagination={false}
+                                        size="small"
+                                        columns={[
+                                            { title: "Name", dataIndex: "name" },
+                                            { title: "Type", dataIndex: "type" },
+                                            { title: "Description", dataIndex: "description" },
+                                            { title: "Price", dataIndex: "price" },
+                                        ]}
+                                    />
+                                );
+                            },
+                            rowExpandable: (record) => (record.subscriptionItems && record.subscriptionItems.length > 0) ?? false,
                         }}
                         columns={[
                             { title: "User ID", dataIndex: "userId" },

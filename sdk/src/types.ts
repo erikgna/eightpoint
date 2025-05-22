@@ -42,3 +42,20 @@ export interface AppAnalyticsPayload {
     totalRevenue: number;
     subscriptions: number;
 }
+
+export interface CreateSubscriptionItemDto {
+    name: string;
+    description?: string;
+    type: string;
+    price: number;
+}
+
+export interface SubscriptionItemPayload {
+    id: string;
+    subscriptionId: string;
+    name: string;
+    description?: string;
+    type: string;
+    price: number;
+    createdAt: string;
+}

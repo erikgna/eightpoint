@@ -228,6 +228,63 @@ Response:
 }
 ```
 
+### Get Subscription Items
+
+```
+GET /subscriptions/<subscriptionId>/items
+Headers:
+x-api-key: <app_api_key>
+```
+
+Response:
+
+```
+{
+    "data": [
+        {
+            "id": "ac36a5f5-989a-4534-90aa-cac16828e915",
+            "subscriptionId": "4edb5027-9c3a-4023-8f67-cdad3fd6c904",
+            "name": "test123",
+            "type": "online",
+            "description": null,
+            "price": 1.99,
+            "createdAt": "2025-05-22T15:07:11.135Z"
+        }
+    ],
+    "total": 1,
+    "page": 1,
+    "lastPage": 1
+}
+```
+
+---
+
+### Create Subscription Item
+
+```
+POST /subscriptions/<subscriptionId>/items
+Headers:
+x-api-key: <app_api_key>
+Body:
+{
+    "name": "test123",
+    "type": "online",
+    "price": 1.99
+}
+```
+
+---
+
+### Delete Subscription Item
+
+```
+DELETE /subscriptions/<subscriptionId>/items/<itemId>
+Headers:
+x-api-key: <app_api_key>
+```
+
+---
+
 ## SDK
 
 1. Navigate to the SDK folder:
@@ -291,6 +348,8 @@ run();
 ```
 
 ## CLI Usage
+
+### ⚠️ You need to setup SDK first ⚠️
 
 Build CLI:
 

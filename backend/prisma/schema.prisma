@@ -42,4 +42,17 @@ model Subscription {
   status    SubscriptionStatus @default(active)
 
   app App @relation(fields: [appId], references: [id])
+  subscriptionItems SubscriptionItem[]
+}
+
+model SubscriptionItem {
+  id              String   @id @default(uuid())
+  subscriptionId  String
+  name            String
+  type            String
+  description     String?
+  price           Float
+  createdAt       DateTime @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
 }

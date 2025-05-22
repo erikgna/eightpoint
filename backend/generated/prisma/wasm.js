@@ -140,6 +140,16 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   status: 'status'
 };
 
+exports.Prisma.SubscriptionItemScalarFieldEnum = {
+  id: 'id',
+  subscriptionId: 'subscriptionId',
+  name: 'name',
+  type: 'type',
+  description: 'description',
+  price: 'price',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -148,6 +158,11 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   active: 'active',
@@ -158,7 +173,8 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
 
 exports.Prisma.ModelName = {
   App: 'App',
-  Subscription: 'Subscription'
+  Subscription: 'Subscription',
+  SubscriptionItem: 'SubscriptionItem'
 };
 
 /**

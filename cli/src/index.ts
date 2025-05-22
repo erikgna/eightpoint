@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { createApp, createSubscription, getActiveSubscriptions, getAnalytics, getCurrentApp } from 'iap-sdk';
+import { createApp, createSubscription, createSubscriptionItem, deleteSubscriptionItem, getActiveSubscriptions, getAnalytics, getCurrentApp, getSubscriptionItems } from 'iap-sdk';
 
 const program = new Command();
 
@@ -86,6 +86,61 @@ program
                 parseInt(options.limit)
             );
             console.log('Active Subscriptions:', result);
+        } catch (err: any) {
+            console.error('Error:', err.message);
+        }
+    });
+
+program
+    .command('create-subscription-item')
+    .description('Create a subscription item for a subscription')
+    .requiredOption('--subscription-id <id>', 'Subscription ID')
+    .requiredOption('--name <name>', 'Item name')
+    .requiredOption('--type <type>', 'Item type')
+    .requiredOption('--price <price>', 'Item price')
+    .option('--description <description>', 'Item description')
+    .action(async (options) => {
+        try {
+            const result = await createSubscriptionItem(options.subscriptionId, {
+                name: options.name,
+                type: options.type,
+                description: options.description || '',
+                price: parseFloat(options.price)
+            });
+            console.log('Subscription item created:', result);
+        } catch (err: any) {
+            console.error('Error:', err.message);
+        }
+    });
+
+program
+    .command('list-subscription-items')
+    .description('List items of a subscription')
+    .requiredOption('--subscription-id <id>', 'Subscription ID')
+    .option('--page <page>', 'Page number', '1')
+    .option('--limit <limit>', 'Page size limit', '10')
+    .action(async (options) => {
+        try {
+            const result = await getSubscriptionItems(
+                options.subscriptionId,
+                parseInt(options.page),
+                parseInt(options.limit)
+            );
+            console.log('Subscription Items:', result);
+        } catch (err: any) {
+            console.error('Error:', err.message);
+        }
+    });
+
+program
+    .command('delete-subscription-item')
+    .description('Delete a subscription item by ID')
+    .requiredOption('--subscription-id <subscription>', 'Subscription ID')
+    .requiredOption('--item-id <id>', 'Item ID to delete')
+    .action(async (options) => {
+        try {
+            const result = await deleteSubscriptionItem(options.subscriptionId, options.itemId);
+            console.log('Subscription item deleted:', result);
         } catch (err: any) {
             console.error('Error:', err.message);
         }

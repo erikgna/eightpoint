@@ -1,4 +1,5 @@
 import type { IApp } from "./App";
+import type { ISubscriptionItem } from "./SubscriptionItem";
 
 export interface ISubscription {
     id: string;
@@ -10,4 +11,5 @@ export interface ISubscription {
     status: string;
     createdAt: string;
     app?: IApp;
+    subscriptionItems?: ISubscriptionItem[];
 }
