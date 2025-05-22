@@ -5,8 +5,9 @@ This guide describes how to deploy the complete system including:
 - SDK (TypeScript package)
 - Backend (NestJS + PostgreSQL)
 - Frontend (React + Vite + Ant Design)
-- CLI Tool
-- Database
+- CLI Tool (Node.js)
+- Infrastructure (Docker, PostgreSQL, Cloud)
+- Monitoring & Security
 
 ---
 
@@ -15,6 +16,7 @@ This guide describes how to deploy the complete system including:
 ```
 iap-system/
 ├── sdk/
+├── cli/
 ├── backend/
 ├── dashboard/
 ├── docker/
@@ -35,22 +37,18 @@ iap-system/
 
 ---
 
-## 🗄 PostgreSQL Setup
+## ☁️ Infrastructure (AWS-first Approach)
 
-### Option 1: Local with Docker
+Use Infrastructure as Code (IaC) via Terraform, Pulumi, or AWS CDK to manage infrastructure.
 
-```bash
-docker run --name iap-postgres \
-  -e POSTGRES_USER=iap_user \
-  -e POSTGRES_PASSWORD=iap_password \
-  -e POSTGRES_DB=iap_db \
-  -p 5432:5432 \
-  -d postgres
-```
-
-### Option 2: Hosted
-
-Use a managed database like Supabase, Neon, or Railway.
+| Component      | AWS Service                   | Notes                                          |
+| -------------- | ----------------------------- | ---------------------------------------------- |
+| **API**        | ECS (Fargate) or Lambda       | Containerized or serverless NestJS backend     |
+| **Database**   | Amazon RDS (PostgreSQL)       | Enable auto-backups, multi-AZ if critical      |
+| **Frontend**   | S3 + CloudFront               | Deploy static assets, enable caching and HTTPS |
+| **Secrets**    | AWS Secrets Manager           | Store API keys, DB credentials                 |
+| **Monitoring** | CloudWatch + Sentry           | Metrics + error reporting                      |
+| **CI/CD**      | GitHub Actions + CodePipeline | CI/CD pipelines to S3, ECS, etc.               |
 
 ## 📦 SDK Deployment
 
@@ -58,6 +56,7 @@ Use a managed database like Supabase, Neon, or Railway.
 
 ```
 cd sdk
+pnpm build
 npm publish --access public
 ```
 
@@ -95,13 +94,39 @@ cli register --name "My App"
 npm publish --access public
 ```
 
+## 🧪 CI/CD Pipelines
+
+| Target  | Pipeline Tool  | Notes                        |
+| ------- | -------------- | ---------------------------- |
+| **SDK** | GitHub Actions | Auto publish on version bump |
+
 ## 🔐 Security & Monitoring
 
-| Concern       | Strategy                                           |
-| ------------- | -------------------------------------------------- |
-| API Auth      | API Key in Authorization header                    |
-| HTTPS         | Enforced via CDN or reverse proxy                  |
-| Rate limiting | Use middleware (e.g. NestJS rate-limiter)          |
-| Logging       | Store events in DB or pipe to service like Logtail |
-| Monitoring    | Tools like Sentry, LogRocket, or PostHog           |
-| DB Backups    | Use Railway/Neon/Supabase backup plans             |
+| Concern        | Strategy                                           |
+| -------------- | -------------------------------------------------- |
+| API Auth       | API Key in Authorization header                    |
+| HTTPS          | Enforced via CDN or reverse proxy                  |
+| Rate limiting  | Use middleware (e.g. NestJS rate-limiter)          |
+| Logging        | Store events in DB or pipe to service like Logtail |
+| Monitoring     | Tools like Sentry, LogRocket, or PostHog           |
+| DB Backups     | Use Railway/Neon/Supabase backup plans             |
+| Secrets        | AWS Secrets Manager or .env managed via CI         |
+| Error Tracking | Sentry (backend + frontend), optional Slack alerts |
+
+## 🚦 Environments
+
+| Environment | Notes                                                        |
+| ----------- | ------------------------------------------------------------ |
+| Local       | Docker Compose, .env, Postgres via Docker                    |
+| Staging     | Deploy preview environment (e.g., Railway, Fly.io)           |
+| Prod        | Full cloud deploy: AWS RDS, ECS, CloudFront, with monitoring |
+
+### 🧱 Optional Features
+
+- Terraform Modules for reusable infra (e.g., RDS + ECS + Secrets)
+
+- Helm Chart if using Kubernetes (EKS, Fly.io, etc.)
+
+- Pulumi/CDK for TypeScript-based infra definitions
+
+- Feature flags via tools like Unleash or Flagsmith
