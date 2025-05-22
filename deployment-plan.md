@@ -52,79 +52,25 @@ docker run --name iap-postgres \
 
 Use a managed database like Supabase, Neon, or Railway.
 
-## 🧠 Backend – NestJS
-
-### ✅ Environment Variables
-
-Create .env.production:
-
-```
-DATABASE_URL=postgresql://iap_user:iap_password@db:5432/iap_db
-CORS_ORIGIN=http://localhost:5173
-PORT=3000
-```
-
-### 🐳 Dockerfile
-
-backend/Dockerfile:
-
-```
-FROM node:23-slim
-WORKDIR /app
-COPY . .
-RUN npm install -g pnpm
-RUN pnpm install
-RUN pnpm run build
-CMD ["node", "dist/main"]
-```
-
-### 🐳 Docker Compose
-
-```
-version: "3.9"
-services:
-  backend:
-    build: ./backend
-    ports:
-      - "3000:3000"
-    env_file: ./backend/.env.production
-    depends_on:
-      - db
-
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: iap_user
-      POSTGRES_PASSWORD: iap_password
-      POSTGRES_DB: iap_db
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
-volumes:
-  pgdata:
-```
-
 ## 📦 SDK Deployment
 
 ### 🚀 Publish SDK to NPM
 
 ```
-cd iap-sdk
+cd sdk
 npm publish --access public
 ```
 
 ### 🔽 Or CDN Hosting (Optional)
 
 ```
-<script src="https://cdn.example.com/iap-sdk.js"></script>
+<script src="https://cdn.example.com/sdk.js"></script>
 ```
 
 ### 📦 Developer Usage
 
 ```
-pnpm install iap-sdk
+pnpm install sdk
 ```
 
 ## 🛠 CLI Tool Deployment
@@ -140,7 +86,7 @@ pnpm link
 Use the CLI:
 
 ```
-iap-cli register --name "My App"
+cli register --name "My App"
 ```
 
 ### 📦 Publish to NPM (Optional)

@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "ipa-cli",
+  "name": "cli",
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {

@@ -31,6 +31,19 @@ This project provides:
 - Docker & Docker Compose
 - PostgreSQL (optional if using Docker)
 
+### PostgreSQL
+
+1. With Docker installed in your machine, run the command:
+
+```bash
+docker run --name iap-postgres \
+  -e POSTGRES_USER=iap_user \
+  -e POSTGRES_PASSWORD=iap_password \
+  -e POSTGRES_DB=iap_db \
+  -p 5432:5432 \
+  -d postgres
+```
+
 ### Backend
 
 1. Navigate to the backend folder:
@@ -49,7 +62,13 @@ pnpm install
 
 4. Run database migrations (if applicable) or ensure your PostgreSQL is running.
 
-5. Start the backend server:
+5. Migrate schemas:
+
+```bash
+pnpm prisma migrate dev
+```
+
+6. Start the backend server:
 
 ```bash
 pnpm run start:dev
