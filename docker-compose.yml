@@ -1,0 +1,55 @@
+networks:
+  iapnet:
+    driver: bridge
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: iap-backend
+    environment:
+      - DATABASE_URL=postgresql://iap_user:iap_password@postgres:5432/iap_db
+      - CORS_ORIGIN=http://localhost
+      - PORT=3000
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    command: sh -c "pnpm prisma migrate deploy && node dist/main"
+    depends_on:
+      - postgres
+    networks:
+      - iapnet
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+      target: runner
+    environment:
+      - VITE_API_BASE=http://localhost:3000
+    container_name: iap-frontend
+    ports:
+      - "80:80"
+    networks:
+      - iapnet
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: iap-postgres
+    environment:
+      POSTGRES_USER: iap_user
+      POSTGRES_PASSWORD: iap_password
+      POSTGRES_DB: iap_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - iapnet
+    restart: unless-stopped
+
+volumes:
+  pgdata:

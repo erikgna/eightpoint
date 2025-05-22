@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "name": "ipa-cli",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsup"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "dotenv": "^16.5.0",
+    "iap-sdk": "link:../sdk",
+    "node-fetch": "^3.3.2"
+  },
+  "bin": "./dist/cli.js"
+}
